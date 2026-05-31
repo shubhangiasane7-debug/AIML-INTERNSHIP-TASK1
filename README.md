@@ -1,22 +1,28 @@
-# AIML-INTERNSHIP-TASK1
-AIML Internship Task 1 Solution
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-# Task 1: Data Cleaning & Preprocessing
+# Load dataset
+df = pd.read_csv("archive/Titanic-Dataset.csv")
 
-## Objective
-Clean and preprocess raw Titanic dataset for Machine Learning.
+# Show basic info
+print(df.info())
+print(df.isnull().sum())
 
-## Performed Tasks
-- Handled missing values
-- Encoded categorical features
-- Standardized numerical features
-- Detected and removed outliers
-- Saved cleaned dataset
+# Fill missing values
+df['Age'] = df['Age'].fillna(df['Age'].mean())
 
-## Tools Used
-- Python
-- Pandas
-- NumPy
-- Matplotlib
-- Seaborn
-- Scikit-lear
+# Encode categorical column
+le = LabelEncoder()
+df['Sex'] = le.fit_transform(df['Sex'])
+
+# Standardize numerical column
+scaler = StandardScaler()
+df[['Age']] = scaler.fit_transform(df[['Age']])
+
+# Boxplot for outliers
+sns.boxplot(x=df['Age'])
+plt.show()
+
+print("Preprocessing Completed")
